@@ -1,0 +1,55 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "rushcards"
+version = "0.1.0"
+authors = [
+  { name="Kevin Christopher Henry", email="k@severian.com" },
+]
+description = "A Python command line application for generating Rush Hour puzzle cards."
+license = "MIT"
+readme="README.md"
+requires-python = ">=3.6"
+dependencies = [
+    "Pillow>=9.0.1",
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+
+    "Development Status :: 4 - Beta",
+    "Topic :: Games/Entertainment :: Board Games",
+    "Topic :: Games/Entertainment :: Puzzle Games",
+]
+keywords = [
+    "games",
+    "rush",
+    "rush-hour",
+]
+
+[project.urls]
+Homepage = "https://github.com/marfire/rushcards"
+Issues = "https://github.com/marfire/rushcards/issues"
+
+[project.scripts]
+rushcards = "rushcards.cli:rushcards_cli"
+
+[tool.hatch.build]
+directory = "../dist"
+
+[tool.hatch.build.targets.sdist]
+
+[tool.hatch.build.targets.wheel]
+packages = ["rushcards"]
+
