@@ -1,7 +1,6 @@
 # Rush Cards
 
-![Sample Rush Cards puzzle](https://raw.githubusercontent.com/marfire/rushcards/v0.1.
-1/docs/images/sample.png)
+![Sample Rush Cards puzzle](https://raw.githubusercontent.com/marfire/rushcards/main/docs/images/sample.png)
 
 Rush Cards provides a Python command line application for generating puzzle cards 
 for the game [Rush Hour](https://en.wikipedia.org/wiki/Rush_Hour_(puzzle)). It 

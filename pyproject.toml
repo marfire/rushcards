@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "rushcards"
-version = "0.1.1"
+version = "0.1.2"
 authors = [
   { name="Kevin Christopher Henry", email="k@severian.com" },
 ]
