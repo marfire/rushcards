@@ -18,15 +18,17 @@ BOARD_GRID_COLOR = "#E8E8E8"
 EXIT_SIZE = CELL_WIDTH // 6
 BOARD_PADDING = EXIT_SIZE
 
-CAR_PADDING_WIDTH = CELL_WIDTH // 12
-CAR_WIDTH = CELL_WIDTH - 2 * CAR_PADDING_WIDTH
+CAR_PADDING = CELL_WIDTH // 12
+CAR_WIDTH = CELL_WIDTH - 2 * CAR_PADDING
 CAR_BORDER_RADIUS = CAR_WIDTH // 4
-BOARD_BORDER_RADIUS = CAR_BORDER_RADIUS + CAR_PADDING_WIDTH  # Match rounded corners
+BOARD_BORDER_RADIUS = CAR_BORDER_RADIUS + CAR_PADDING  # Match rounded corners
 
 TEXT_COLOR = "#555555"
-TEXT_HEIGHT = CELL_WIDTH  # This is fairly arbitrary
-FONT_SIZE = CELL_WIDTH // 4
-DEBUG_FONT_SIZE = CELL_WIDTH // 6
+TEXT_BOX_HEIGHT = CELL_WIDTH  # This is fairly arbitrary
+TEXT_BOX_TOP_PADDING = CELL_WIDTH // 6
+TEXT_BOX_LEFT_PADDING = CELL_WIDTH // 8
+TEXT_FONT_SIZE = CELL_WIDTH // 3
+TEXT_DEBUG_FONT_SIZE = CELL_WIDTH // 5
 
 
 # Draw the board border, grid lines, and exit mark.
@@ -72,15 +74,15 @@ def draw_board(drawer, debug):
 def draw_car(drawer, car, color):
     # The start pixel is determined solely by the Car's position but
     # the end pixel depends on its orientation as well.
-    start_x = car.position.x * CELL_WIDTH + CAR_PADDING_WIDTH
-    start_y = car.position.y * CELL_WIDTH + CAR_PADDING_WIDTH
+    start_x = car.position.x * CELL_WIDTH + CAR_PADDING
+    start_y = car.position.y * CELL_WIDTH + CAR_PADDING
     end_x = (
-        (car.position.x + car.size) * CELL_WIDTH - CAR_PADDING_WIDTH
+        (car.position.x + car.size) * CELL_WIDTH - CAR_PADDING
         if car.orientation is Orientation.HORIZONTAL
         else start_x + CAR_WIDTH
     )
     end_y = (
-        (car.position.y + car.size) * CELL_WIDTH - CAR_PADDING_WIDTH
+        (car.position.y + car.size) * CELL_WIDTH - CAR_PADDING
         if car.orientation is Orientation.VERTICAL
         else start_y + CAR_WIDTH
     )
@@ -109,16 +111,16 @@ def draw_cars(drawer, cars, debug):
 def draw_text(drawer, puzzle, debug):
     text = f"Difficulty: {puzzle.difficulty}"
 
-    # Just use the default font, not worth packaging one.
-    drawer.text((0, FONT_SIZE), text, fill=TEXT_COLOR, font_size=FONT_SIZE)
+    # Just use the default font, it's not worth packaging one.
+    drawer.text((TEXT_BOX_LEFT_PADDING, TEXT_BOX_TOP_PADDING), text, fill=TEXT_COLOR, font_size=TEXT_FONT_SIZE)
 
     if debug:
         debug_text = puzzle.puzzle_def
         drawer.text(
-            (0, 3 * FONT_SIZE),
+            (TEXT_BOX_LEFT_PADDING, TEXT_BOX_TOP_PADDING * 2 + TEXT_FONT_SIZE),
             debug_text,
             fill=TEXT_COLOR,
-            font_size=DEBUG_FONT_SIZE,
+            font_size=TEXT_DEBUG_FONT_SIZE,
         )
 
 
@@ -133,7 +135,7 @@ def draw_puzzle(puzzle, debug):
     draw_board(board_drawer, debug)
     draw_cars(board_drawer, puzzle.cars, debug)
 
-    text_image = Image.new("RGB", (BOARD_WIDTH, TEXT_HEIGHT), PAGE_BACKGROUND_COLOR)
+    text_image = Image.new("RGB", (BOARD_WIDTH, TEXT_BOX_HEIGHT), PAGE_BACKGROUND_COLOR)
     text_drawer = ImageDraw.Draw(text_image, mode="RGBA")
     draw_text(text_drawer, puzzle, debug)
 
@@ -143,7 +145,7 @@ def draw_puzzle(puzzle, debug):
         "RGB",
         (
             BOARD_PADDING + BOARD_WIDTH + EXIT_SIZE,
-            BOARD_PADDING + BOARD_WIDTH + TEXT_HEIGHT,
+            BOARD_PADDING + BOARD_WIDTH + TEXT_BOX_HEIGHT,
         ),
         PAGE_BACKGROUND_COLOR,
     )
