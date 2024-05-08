@@ -154,10 +154,8 @@ def draw_puzzle(puzzle, debug):
 
 # Return a single image (as a string of bytes) showing all the puzzles
 # represented by puzzles in the layout represented by layout.
-#
-# We trust the caller on layout, even if it's larger than needed for the number of puzzles.
 def draw_puzzles(puzzles, layout, image_format, debug):
-    assert len(puzzles) > 0, puzzles
+    assert len(puzzles) == layout.rows * layout.cols, puzzles
 
     # Draw an image for each puzzle.
     puzzle_images = [draw_puzzle(puzzle, debug) for puzzle in puzzles]

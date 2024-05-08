@@ -40,8 +40,8 @@ def generate_puzzles(difficulties, layout, outfile, do_open, debug):
 
 # Converts string difficulties into a list of integers. The special case of
 # "_" is converted to None.
-def difficulty_type(difficulty_str):
-    difficulties_parts = [d.strip() for d in difficulty_str.split(",")]
+def difficulties_type(difficulties_str):
+    difficulties_parts = [d.strip() for d in difficulties_str.split(",")]
     difficulties_raw = [None if d == "_" else int(d) for d in difficulties_parts]
 
     if any(type(d) is int and not 1 <= d <= DIFFICULTY_STEPS for d in difficulties_raw):
@@ -69,8 +69,8 @@ def rushcards_cli():
         prog="rushcards", description="Generate puzzle cards for the game Rush Hour."
     )
     parser.add_argument(
-        "difficulty",
-        type=difficulty_type,
+        "difficulties",
+        type=difficulties_type,
         help=f"comma-separated list of difficulties (1-{DIFFICULTY_STEPS} or _ for random)",
     )
     parser.add_argument(
@@ -97,28 +97,31 @@ def rushcards_cli():
     )
     args = parser.parse_args()
 
-    if args.layout and len(args.difficulty) > (args.layout.rows * args.layout.cols):
+    difficulties_raw = args.difficulties
+    num_specified = len(difficulties_raw)
+    if args.layout and num_specified > (args.layout.rows * args.layout.cols):
         parser.error("Too many puzzles requested for given layout")
 
-    # If there is only one difficulty but layout is provided, create as many
-    # puzzles with that difficulty as necessary to fill the layout.
-    difficulties_raw = args.difficulty
-    if len(difficulties_raw) == 1 and args.layout:
-        difficulties_raw *= args.layout.rows * args.layout.cols
+    # If a layout wasn't provided, create one to fit at least the requested number of
+    # puzzles (showing preference for more columns and fewer rows).
+    layout = args.layout
+    if not layout:
+        cols = math.ceil(math.sqrt(num_specified))
+        rows = math.ceil(num_specified / cols)
+        layout = Layout(rows, cols)
+
+    # Repeat the sequence of specified difficulties as many times as needed
+    # to fill the layout.
+    num_needed = layout.rows * layout.cols
+    if num_specified < num_needed:
+        difficulties_raw *= math.ceil(num_needed / num_specified)
+        difficulties_raw = difficulties_raw[:num_needed]
 
     # Insert random difficulties where requested.
     difficulties = [
         d if d is not None else random.randrange(1, DIFFICULTY_STEPS + 1)
         for d in difficulties_raw
     ]
-
-    # If a layout wasn't provided, create one to fit the requested number of puzzles
-    # (showing preference for more columns and fewer rows).
-    layout = args.layout
-    if not layout:
-        cols = int(math.ceil(math.sqrt(len(difficulties))))
-        rows = int(math.ceil(len(difficulties) / cols))
-        layout = Layout(rows, cols)
 
     do_open = not args.no_open
 
