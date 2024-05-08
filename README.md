@@ -4,7 +4,7 @@
 
 Rush Cards provides a Python command line application for generating puzzle cards 
 for the game [Rush Hour](https://en.wikipedia.org/wiki/Rush_Hour_(puzzle)). It 
-builds on [a project](https://www.michaelfogleman.com/rush/) by Michael Fogelman to 
+    builds on [a project](https://www.michaelfogleman.com/rush/) by Michael Fogleman to 
 identify all possible Rush Hour puzzles. Put simply, this project takes that 
 database of puzzles, keeps the puzzles that can be expressed in the standard board 
 game, maps a 1-10 difficulty scale onto them, and provides an interface to generate 
