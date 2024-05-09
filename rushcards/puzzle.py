@@ -57,9 +57,7 @@ def get_cars(board_def):
 # To avoid generating duplicate puzzles we destructively remove the chosen
 # puzzle from the all_puzzles data structure before returning it.
 def choose_puzzle(difficulty):
-    difficulty_puzzles = all_puzzles[
-        difficulty
-    ]  # Will raise ValueError if we run out of puzzles
+    difficulty_puzzles = all_puzzles[difficulty]  # Raises ValueError if we run out of puzzles.
     index = random.randint(0, len(difficulty_puzzles) - 1)
 
     puzzle = difficulty_puzzles.pop(index)
