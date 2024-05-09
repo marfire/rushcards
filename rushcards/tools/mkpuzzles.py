@@ -38,14 +38,14 @@ def cars_valid(car_sizes, allowed_cars):
 # A general approach to scaling a value from one integer scale to another
 # according to a power function. Used to turn the number of steps needed
 # for a puzzle into a difficulty.
-def get_scaled_value(value_in, min_in, max_in, min_out, max_out, power):
+def get_scaled_value(value_in, min_in, max_in, min_out, max_out, exponent):
     assert min_in <= value_in <= max_in, value_in
 
     # Normalize the input range to a fraction from [0 to 1).
     fraction_in = (value_in - min_in) / (max_in - min_in + 1)
 
     # Use the power function to adjust the fraction.
-    fraction_out = fraction_in**power
+    fraction_out = fraction_in**exponent
 
     # Rescale the fraction to the output range
     value_out = int(fraction_out * (max_out - min_out + 1)) + min_out
